@@ -196,7 +196,8 @@ class Tello:
 
         """
 
-        return self.move('back', distance)
+      
+        return self.send_command('back %s' % distance)
 
     def move_down(self, distance):
         """Moves down for a distance.
@@ -211,7 +212,7 @@ class Tello:
 
         """
 
-        return self.move('down', distance)
+        return self.send_command('down %s' % distance)
 
     def move_forward(self, distance):
         """Moves forward for a distance.
@@ -225,7 +226,7 @@ class Tello:
             str: Response from Tello, 'OK' or 'FALSE'.
 
         """
-        return self.move('forward', distance)
+        return self.send_command('left %s' % distance)
 
     def move_left(self, distance):
         """Moves left for a distance.
@@ -239,7 +240,8 @@ class Tello:
             str: Response from Tello, 'OK' or 'FALSE'.
 
         """
-        return self.move('left', distance)
+
+        return self.send_command('left %s' % distance)
 
     def move_right(self, distance):
         """Moves right for a distance.
@@ -250,7 +252,8 @@ class Tello:
             distance (int): Distance to move.
 
         """
-        return self.move('right', distance)
+        return self.send_command('right %s' % distance)
+
 
     def move_up(self, distance):
         """Moves up for a distance.
@@ -265,7 +268,8 @@ class Tello:
 
         """
 
-        return self.move('up', distance)
+        return self.send_command('up %s' % distance)
+
 
     def send_command(self, command):
         """Sends a command to the Tello and waits for a response.
@@ -288,6 +292,8 @@ class Tello:
         timer = threading.Timer(self.command_timeout, self.set_abort_flag)
 
         self.socket.sendto(command.encode('utf-8'), self.tello_address)
+        print(command.encode('utf-8'))
+        print(self.tello_address, "address")
 
         timer.start()
 
@@ -298,7 +304,7 @@ class Tello:
         timer.cancel()
 
         response = self.response.decode('utf-8')
-        self.response = None
+
 
         return response
 
